@@ -1,48 +1,137 @@
-<!doctype html>
-<html lang="pt-BR" data-theme="light">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
-    <title>Modelo de Jogo — Jogos VR</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="app">
-      <header class="top">
-        <div>
-          <span class="kicker">Modelo</span>
-          <h1 id="title">Clique no Alvo</h1>
-          <p class="subtitle">Troque este jogo pelo seu. O contrato já está pronto.</p>
-        </div>
-        <button id="restart" class="btn" type="button">Reiniciar</button>
-      </header>
-
-      <main>
-        <div class="hud">
-          <span class="pill">Alvos: <strong id="score">0</strong>/<span id="total">10</span></span>
-          <span class="pill">Tempo: <strong id="timer">0,0s</strong></span>
-        </div>
-
-        <div id="board" class="board" aria-label="Área do jogo">
-          <p id="start-hint" class="start-hint">Clique no alvo para começar</p>
-        </div>
-      </main>
-
-      <footer class="bottom">
-        <p>Este é o arquivo <code>game.js</code>. Leia os comentários e adapte.</p>
-      </footer>
-    </div>
-
-    <div id="result" class="overlay" hidden>
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="result-title">
-        <div class="modal-icon" aria-hidden="true">🎯</div>
-        <h2 id="result-title">Muito bem!</h2>
-        <p id="result-text">Você concluiu o jogo.</p>
-        <button id="play-again" class="btn btn-primary full" type="button">Jogar de novo</button>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Cofre das Sombras</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="dark" data-profundidade="1">
+  <div class="container-principal">
+    <!-- Barra superior com título e botão para alternar tema claro/escuro -->
+    <header class="topo-jogo">
+      <div class="marca-jogo">
+        <span class="icone-titulo" aria-hidden="true">🗝️</span>
+        <h1>O Cofre das Sombras</h1>
       </div>
-    </div>
+      <button type="button" id="botao-tema" class="botao-secundario" aria-label="Alternar tema claro ou escuro">
+        🌓 Tema
+      </button>
+    </header>
 
-    <script src="game.js"></script>
-  </body>
+    <main class="area-jogo">
+      <!-- TELA 1: INÍCIO (NOME E ESCOLHA DE CLASSE) -->
+      <section id="tela-inicial" class="painel">
+        <h2>Prepare-se para a Masmorra</h2>
+        <p class="texto-intro">
+          Desça pelas <strong>10 fases</strong> de uma masmorra que fica cada vez mais escura e estranha.
+          Use o <strong>pensamento lógico</strong> para abrir baús e gerencie suas <strong>moedas</strong> na loja do Goblin para vencer o Chefe Final!
+        </p>
+
+        <div class="grupo-formulario">
+          <label for="campo-nome">Nome do seu herói:</label>
+          <input
+            type="text"
+            id="campo-nome"
+            maxlength="20"
+            placeholder="Digite seu nome ou apelido..."
+            autocomplete="off"
+          >
+        </div>
+
+        <div class="grupo-formulario">
+          <p class="rotulo-bloco">Escolha sua classe:</p>
+          <div class="grade-classes" role="group" aria-label="Escolha de classe">
+            <button type="button" class="botao-classe ativo" data-classe="guardiao">
+              <span class="classe-icone">🛡️</span>
+              <strong>Guardião</strong>
+              <small>120 Vida | 30 Moedas</small>
+            </button>
+
+            <button type="button" class="botao-classe" data-classe="mercador">
+              <span class="classe-icone">💰</span>
+              <strong>Mercador</strong>
+              <small>90 Vida | 65 Moedas</small>
+            </button>
+
+            <button type="button" class="botao-classe" data-classe="sabio">
+              <span class="classe-icone">🔮</span>
+              <strong>Sábio</strong>
+              <small>100 Vida | 45 Moedas</small>
+            </button>
+          </div>
+          <p id="descricao-classe-selecionada" class="dica-classe">
+            Guardião: começa com mais vida e +2 de defesa contra armadilhas e monstros.
+          </p>
+        </div>
+
+        <button type="button" id="botao-comecar" class="botao-primario">
+          Entrar na Masmorra
+        </button>
+      </section>
+
+      <!-- TELA 2: JOGO PRINCIPAL (10 FASES) -->
+      <section id="tela-jogo" class="painel oculto" aria-live="polite">
+        <!-- Status do jogador -->
+        <div class="barra-status">
+          <div class="item-status">
+            <span class="rotulo-status">Herói</span>
+            <strong id="info-heroi">Aventureiro</strong>
+          </div>
+          <div class="item-status">
+            <span class="rotulo-status">Fase</span>
+            <strong id="info-fase">1 / 10</strong>
+          </div>
+          <div class="item-status destaque-vida">
+            <span class="rotulo-status">Vida</span>
+            <strong id="info-vida">100</strong>
+          </div>
+          <div class="item-status destaque-moeda">
+            <span class="rotulo-status">Moedas</span>
+            <strong id="info-moedas">40</strong>
+          </div>
+          <div class="item-status">
+            <span class="rotulo-status">Poder</span>
+            <strong id="info-atributos">⚔️ 10 | 🛡️ 2</strong>
+          </div>
+        </div>
+
+        <!-- Cenário que escurece e fica mais bizarro a cada fase -->
+        <div id="cenario-masmorra" class="cenario-masmorra">
+          <span id="etiqueta-profundidade" class="etiqueta-profundidade">
+            Nível 1: Entrada de Pedra Úmida
+          </span>
+          <div id="ilustracao-evento" class="ilustracao-evento" aria-hidden="true"></div>
+        </div>
+
+        <!-- Desafio ou Loja do Goblin -->
+        <div class="cartao-evento">
+          <h2 id="titulo-evento">Título do Desafio</h2>
+          <p id="descricao-evento" class="descricao-evento">Descrição do desafio atual.</p>
+          <div id="lista-opcoes" class="lista-opcoes"></div>
+        </div>
+
+        <!-- Explicação curta após cada escolha -->
+        <div id="caixa-feedback" class="caixa-feedback oculto">
+          <p id="texto-feedback"></p>
+          <button type="button" id="botao-proximo" class="botao-primario">
+            Continuar
+          </button>
+        </div>
+      </section>
+
+      <!-- TELA 3: RESULTADO FINAL -->
+      <section id="tela-final" class="painel oculto" aria-live="polite">
+        <h2 id="titulo-final">Fim da Jornada</h2>
+        <p id="mensagem-final" class="texto-intro"></p>
+        <div id="resumo-pontuacao" class="caixa-resumo"></div>
+        <button type="button" id="botao-reiniciar" class="botao-primario">
+          Jogar Novamente
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <script src="game.js"></script>
+</body>
 </html>
