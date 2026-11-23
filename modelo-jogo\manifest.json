@@ -1,16 +1,22 @@
 {
-  "slug": "meu-jogo",
-  "title": "O cofre das sombras",
-  "author": "Seu nome",
-  "authorClass": "8°B",
-  "discipline": "Pensamento logico",
-  "grades": ["8º"],
-  "tags": ["palavra-chave", "outra-palavra"],
-  "description": "Uma frase curta que explica o que o jogo ensina.",
-  "instructions": "Como jogar, em uma ou duas frases.",
-  "duration": 5,
+  "slug": "o-cofre-das-sombras",
+  "title": "O Cofre das Sombras",
+  "author": "Estudante do 8º B",
+  "authorClass": "8º B",
+  "discipline": "Educação Financeira e Pensamento Lógico",
+  "grades": ["8º ano"],
+  "tags": [
+    "educacao-financeira",
+    "pensamento-logico",
+    "rpg",
+    "masmorra",
+    "orcamento"
+  ],
+  "description": "Desça por 10 fases de uma masmorra cada vez mais escura, decifre baús com lógica e gerencie suas moedas na loja do Goblin para vencer o Chefe Final.",
+  "instructions": "Digite o nome do seu herói, escolha sua classe e clique nas decisões de cada fase para juntar moedas e comprar equipamentos.",
+  "duration": "3 min",
   "version": "1.0.0",
   "entry": "index.html",
   "cover": "cover.svg",
-  "createdAt": "2026-11-02"
+  "createdAt": "2026-11-23"
 }
